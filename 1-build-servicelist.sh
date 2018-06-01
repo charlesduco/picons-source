@@ -80,7 +80,8 @@ if [[ -d $location/build-input/enigma2 ]]; then
         echo -ne "Enigma2: Converting channel: $currentline/$channelcount"\\r
 
         serviceref_id=$(sed -e 's/^[^_]*_0_[^_]*_//g' -e 's/_0_0_0$//g' <<< "$serviceref")
-        unique_id=${serviceref_id%????}
+        #unique_id=${serviceref_id%????}
+        unique_id=$serviceref_id
         channelref=(${serviceref//_/ })
         channelname=$(grep -i -A1 "${channelref[3]}:.*${channelref[6]}:.*${channelref[4]}:.*${channelref[5]}:.*:.*" <<< "$lamedb" | sed -n "2p" | iconv -f utf-8 -t ascii//translit 2>> $logfile | sed -e 's/^[ \t]*//' -e 's/|//g' -e 's/^//g')
 
@@ -119,7 +120,8 @@ if [[ -d $location/build-input/tvheadend ]]; then
 
         serviceref=$(grep -o '1_0_.*_.*_.*_.*_.*_0_0_0' "$channelfile")
         serviceref_id=$(sed -e 's/^[^_]*_0_[^_]*_//g' -e 's/_0_0_0$//g' <<< "$serviceref")
-        unique_id=${serviceref_id%????}
+        #unique_id=${serviceref_id%????}
+        unique_id=$serviceref_id
         tvhservice=$(grep -A1 'services' "$channelfile" | sed -n "2p" | sed -e 's/"//g' -e 's/,//g')
         channelname=$(grep 'svcname' $(find "$location/build-input/tvheadend" -type f -name $tvhservice) | sed -e 's/.*"svcname": "//g' -e 's/",//g' | iconv -f utf-8 -t ascii//translit 2>> $logfile | sed -e 's/^[ \t]*//' -e 's/|//g' -e 's/^//g')
 
